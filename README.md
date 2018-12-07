@@ -1,6 +1,6 @@
 # myip
 
-Get your IP address from command line.
+Get your external IP address from command line.
 
 [![Build status](https://dev.azure.com/nekomimiswitch/General/_apis/build/status/myip)](https://dev.azure.com/nekomimiswitch/General/_build/latest?definitionId=35)
 
