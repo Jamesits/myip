@@ -38,7 +38,7 @@ myip --method OpenDNS
 myip --method OpenDNS-API
 ```
 
-### Donation
+## Donation
 
 If this project is helpful to you, please consider buying me a coffee.
 
