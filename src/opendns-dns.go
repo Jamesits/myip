@@ -2,60 +2,68 @@ package main
 
 import (
 	"context"
-	"math/rand"
+	"errors"
 	"net"
+	"math/rand"
 )
 
-// override the network and address of the DNS request
-func CustomDNSDialerFactory(address string) func(context.Context, string, string) (net.Conn, error) {
-	return func (ctx context.Context, network string, address string) (net.Conn, error) {
-		d := net.Dialer{}
-		return d.DialContext(ctx, network, address)
-		}
+func dialContextIPv4(ctx context.Context, network, address string) (net.Conn, error) {
+	switch network {
+	case "tcp", "tcp4", "tcp6":
+		network = "tcp4"
+	case "udp", "udp4", "udp6":
+		network = "udp4"
+	}
+
+	return (&net.Dialer{}).DialContext(ctx, network, address)
 }
 
-func getOpenDnsResolverIpv4() string {
-	addresses := []string{
-		"208.67.222.222:53",
-		"208.67.220.220:53",
+func dialContextIPv6(ctx context.Context, network, address string) (net.Conn, error) {
+	switch network {
+	case "tcp", "tcp4", "tcp6":
+		network = "tcp6"
+	case "udp", "udp4", "udp6":
+		network = "udp6"
 	}
-	n := rand.Int() % len(addresses)
-	return addresses[n]
+	return (&net.Dialer{}).DialContext(ctx, network, address)
 }
 
-func getOpenDnsResolverIpv6() string {
-	addresses := []string{
-		"[2620:119:35::35]:53",
-		"[2620:119:53::53]:53",
-	}
-	n := rand.Int() % len(addresses)
-	return addresses[n]
+func dialContextDualStack(ctx context.Context, network, address string) (net.Conn, error) {
+	return (&net.Dialer{DualStack: true}).DialContext(ctx, network, address)
 }
 
 func OpenDnsDnsQuery(mode int, server string) (net.IP, error) {
-	var apiEndpoint string
-	if server == "-" {
-		switch mode {
-		case MODE_AUTO:
-			apiEndpoint = "resolver1.opendns.com:53"
-		case MODE_IPv4:
-			apiEndpoint = getOpenDnsResolverIpv4()
-		case MODE_IPv6:
-			apiEndpoint = getOpenDnsResolverIpv6()
-		}
-	} else {
-		apiEndpoint = server
+	ctx := context.Background()
+
+	defaultAddresses := []string{
+		"resolver1.opendns.com:53",
+		"resolver2.opendns.com:53",
+	}
+	n := rand.Int() % len(defaultAddresses)
+
+	apiEndpoint := server
+	if apiEndpoint == "-" {
+		apiEndpoint = defaultAddresses[n]
 	}
 
-	resolver := net.Resolver {
-		PreferGo:true,
-		Dial:CustomDNSDialerFactory(apiEndpoint),
+	resolver := &net.Resolver{
+		PreferGo: true,
 	}
-	ctx := context.Background()
+	switch mode {
+	case MODE_IPv4:
+		resolver.Dial = dialContextIPv4
+	case MODE_IPv6:
+		resolver.Dial = dialContextIPv6
+	default:
+		resolver.Dial = dialContextDualStack
+	}
 
 	ips, err := resolver.LookupIPAddr(ctx, "myip.opendns.com")
 	if err != nil {
 		return nil, err
+	}
+	if len(ips) == 0 {
+		return nil, errors.New("server returned no IP address")
 	}
 	return ips[0].IP, nil
 }
