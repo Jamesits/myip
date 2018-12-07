@@ -2,6 +2,8 @@
 
 Get your IP address from command line.
 
+[![Build status](https://dev.azure.com/nekomimiswitch/General/_apis/build/status/myip)](https://dev.azure.com/nekomimiswitch/General/_build/latest?definitionId=35)
+
 ## Usage
 
 Command line argument `-4`/`-6` can be used to set IPv4/IPv6 preference with some methods.

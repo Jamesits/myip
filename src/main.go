@@ -6,12 +6,22 @@ import (
 	"fmt"
 	"math/rand"
 	"net"
+	"os"
 	"strings"
 	"time"
 )
 
 func main() {
 	rand.Seed(time.Now().Unix())
+
+	flag.CommandLine.SetOutput(os.Stderr)
+
+	flag.Usage = func() {
+		fmt.Fprintf(os.Stderr, "myip - a tool to get your external IP address. \nhttps://github.com/Jamesits/myip\n\n")
+		fmt.Fprintf(os.Stderr, "Usage of %s:\n", os.Args[0])
+
+		flag.PrintDefaults()
+	}
 
 	ipv4 := flag.Bool("4", false, "Prefer IPv4")
 	ipv6 := flag.Bool("6", false, "Prefer IPv6")
