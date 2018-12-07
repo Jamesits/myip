@@ -6,7 +6,18 @@ Get your external IP address from command line.
 
 ## Usage
 
-Command line argument `-4`/`-6` can be used to set IPv4/IPv6 preference with some methods.
+### Basic Usage
+
+```shell
+$ myip
+2001:db8::2
+
+$ myip -4
+192.0.2.2
+
+$ myip -6
+2001:db8::2
+```
 
 ### STUN
 
