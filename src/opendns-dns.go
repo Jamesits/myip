@@ -3,8 +3,8 @@ package main
 import (
 	"context"
 	"errors"
-	"net"
 	"math/rand"
+	"net"
 )
 
 func dialContextIPv4(ctx context.Context, network, address string) (net.Conn, error) {
@@ -32,7 +32,7 @@ func dialContextDualStack(ctx context.Context, network, address string) (net.Con
 	return (&net.Dialer{DualStack: true}).DialContext(ctx, network, address)
 }
 
-func OpenDnsDnsQuery(mode int, server string) (net.IP, error) {
+func OpenDnsDnsQuery(mode Mode, server string) (net.IP, error) {
 	ctx := context.Background()
 
 	defaultAddresses := []string{

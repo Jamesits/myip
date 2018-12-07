@@ -5,7 +5,7 @@ import (
 	"net"
 )
 
-func Stun(mode int, server string) (net.IP, error) {
+func Stun(mode Mode, server string) (net.IP, error) {
 	var network string
 	switch mode {
 	case MODE_AUTO:
