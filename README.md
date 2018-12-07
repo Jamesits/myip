@@ -49,6 +49,10 @@ myip --method OpenDNS
 myip --method OpenDNS-API
 ```
 
+## Building
+
+Use go 1.10 or higher.
+
 ## Donation
 
 If this project is helpful to you, please consider buying me a coffee.
