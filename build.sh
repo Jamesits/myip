@@ -15,3 +15,14 @@ go mod verify
 cd src
 go build -ldflags "-s -w" -o "../build/$OUT_FILE"
 
+# upx
+if command -v upx; then
+        ! upx "build/$OUT_FILE"
+else
+        echo "UPX not installed, compression skipped"
+fi
+
+ls -lh "build/$OUT_FILE"
+
+# set exit code even if the previous command fails
+exit 0
