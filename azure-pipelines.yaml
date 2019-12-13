@@ -64,7 +64,7 @@ jobs:
         export GOBIN="/opt/hostedtoolcache/go/${GOVER}/x64/bin"
         export OUT_FILE="myip-${GOOS}-${GOARCH}${FILENAME_SUFFIX}"
         ./build.sh
-        cp build/snd* ${BUILD_ARTIFACTSTAGINGDIRECTORY}
+        cp build/* ${BUILD_ARTIFACTSTAGINGDIRECTORY}
       displayName: 'Build'
 
     - task: PublishBuildArtifacts@1
