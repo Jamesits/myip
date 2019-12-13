@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/gortc/stun"
+	"gortc.io/stun"
 	"net"
 )
 

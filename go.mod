@@ -1,5 +1,5 @@
 module main
 
-require github.com/gortc/stun v1.18.2
+require gortc.io/stun v1.21.1
 
 go 1.13
