@@ -51,7 +51,7 @@ myip --method OpenDNS-API
 
 ## Building
 
-Use go 1.10 or higher.
+Use go 1.11 or higher. Run `build.sh` to build and collect your artifact in `build` directory.
 
 ## Donation
 
