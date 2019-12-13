@@ -12,8 +12,9 @@ export GO111MODULE=on
 go mod download
 go mod verify
 
-cd src
+pushd src
 go build -ldflags "-s -w" -o "../build/$OUT_FILE"
+popd
 
 # upx
 if command -v upx; then
